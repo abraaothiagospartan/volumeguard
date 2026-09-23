@@ -1,0 +1,5 @@
+# arquivos gerados pelo build.ps1 (os binários vão como anexos da release, não no repositório)
+obj/
+dist/
+release/
+assets/app.ico

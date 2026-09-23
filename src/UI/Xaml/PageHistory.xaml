@@ -1,0 +1,96 @@
+<ScrollViewer xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+              xmlns:vg="clr-namespace:VolumeGuard.UI;assembly=VolumeGuard"
+              VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
+    <StackPanel Margin="24,6,24,24">
+        <DockPanel>
+            <StackPanel DockPanel.Dock="Right" Orientation="Horizontal" VerticalAlignment="Center">
+                <Button x:Name="PrevDay" Style="{StaticResource SmallButton}" Content="‹  Anterior"/>
+                <Button x:Name="TodayButton" Style="{StaticResource SmallButton}" Content="Hoje" Margin="6,0"/>
+                <Button x:Name="NextDay" Style="{StaticResource SmallButton}" Content="Próximo  ›"/>
+            </StackPanel>
+            <TextBlock x:Name="DayTitle" Style="{StaticResource H2}" VerticalAlignment="Center"/>
+        </DockPanel>
+
+        <UniformGrid Columns="5" Margin="0,14,0,0">
+            <Border Style="{StaticResource Card}" Margin="0,0,10,0">
+                <StackPanel>
+                    <TextBlock Style="{StaticResource Caption}" Text="Dose diária"/>
+                    <TextBlock x:Name="StatDose" FontSize="22" FontWeight="SemiBold" Text="—"/>
+                </StackPanel>
+            </Border>
+            <Border Style="{StaticResource Card}" Margin="0,0,10,0">
+                <StackPanel>
+                    <TextBlock Style="{StaticResource Caption}" Text="Tempo ouvindo"/>
+                    <TextBlock x:Name="StatListen" FontSize="22" FontWeight="SemiBold" Text="—"/>
+                </StackPanel>
+            </Border>
+            <Border Style="{StaticResource Card}" Margin="0,0,10,0">
+                <StackPanel>
+                    <TextBlock Style="{StaticResource Caption}" Text="Média (LAeq)"/>
+                    <TextBlock x:Name="StatLeq" FontSize="22" FontWeight="SemiBold" Text="—"/>
+                </StackPanel>
+            </Border>
+            <Border Style="{StaticResource Card}" Margin="0,0,10,0">
+                <StackPanel>
+                    <TextBlock Style="{StaticResource Caption}" Text="Pico (1 s)"/>
+                    <TextBlock x:Name="StatMax" FontSize="22" FontWeight="SemiBold" Text="—"/>
+                </StackPanel>
+            </Border>
+            <Border Style="{StaticResource Card}">
+                <StackPanel>
+                    <TextBlock Style="{StaticResource Caption}" Text="Acima de 85 dB"/>
+                    <TextBlock x:Name="StatLoud" FontSize="22" FontWeight="SemiBold" Text="—"/>
+                </StackPanel>
+            </Border>
+        </UniformGrid>
+
+        <Border Style="{StaticResource Card}" Margin="0,14,0,0">
+            <StackPanel>
+                <DockPanel>
+                    <StackPanel x:Name="ZoneLegend" DockPanel.Dock="Right" Orientation="Horizontal" VerticalAlignment="Center"/>
+                    <TextBlock Text="NÍVEL AO LONGO DO DIA · MÉDIA A CADA 10 MIN" Style="{StaticResource Overline}" VerticalAlignment="Center"/>
+                </DockPanel>
+                <vg:DayChart x:Name="DayChart" Height="230" Margin="0,12,0,0"/>
+            </StackPanel>
+        </Border>
+
+        <Grid Margin="0,14,0,0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="3*"/>
+                <ColumnDefinition Width="14"/>
+                <ColumnDefinition Width="2*"/>
+            </Grid.ColumnDefinitions>
+            <Border Style="{StaticResource Card}">
+                <StackPanel>
+                    <TextBlock Text="DOSE DIÁRIA · ÚLTIMOS 14 DIAS" Style="{StaticResource Overline}"/>
+                    <vg:WeekChart x:Name="WeekChart" Height="190" Margin="0,12,0,0"/>
+                    <TextBlock Style="{StaticResource Caption}" Text="Clique numa barra para ver o dia." Margin="0,6,0,0"/>
+                </StackPanel>
+            </Border>
+            <Border Grid.Column="2" Style="{StaticResource Card}">
+                <StackPanel>
+                    <TextBlock Text="QUEM MAIS PESOU NO DIA" Style="{StaticResource Overline}"/>
+                    <ItemsControl x:Name="TopApps" Margin="0,10,0,0">
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <StackPanel Margin="0,0,0,10">
+                                    <DockPanel>
+                                        <TextBlock DockPanel.Dock="Right" Text="{Binding ShareText}" Style="{StaticResource Muted}"/>
+                                        <TextBlock Text="{Binding Name}" TextTrimming="CharacterEllipsis"/>
+                                    </DockPanel>
+                                    <vg:MeterBar Height="6" Value="{Binding Share}" Fill="{StaticResource AccentBrush}" Margin="0,5,0,0"/>
+                                </StackPanel>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                    <TextBlock x:Name="TopAppsEmpty" Style="{StaticResource Caption}" Text="Sem dados neste dia." Visibility="Collapsed"/>
+                    <TextBlock Style="{StaticResource Caption}" TextWrapping="Wrap" Margin="0,6,0,0"
+                               Text="Parte da energia sonora (o que conta para a dose) que veio de cada app."/>
+                </StackPanel>
+            </Border>
+        </Grid>
+        <TextBlock Style="{StaticResource Caption}" TextWrapping="Wrap" Margin="0,14,0,0"
+                   Text="Os dados ficam só no seu PC, em %APPDATA%\VolumeGuard\historico (um arquivo CSV por dia)."/>
+    </StackPanel>
+</ScrollViewer>

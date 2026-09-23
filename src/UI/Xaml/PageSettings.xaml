@@ -1,0 +1,145 @@
+<ScrollViewer xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+              VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
+    <StackPanel Margin="24,6,24,24">
+
+        <!-- Fone / calibração -->
+        <Border x:Name="CalCard" Style="{StaticResource Card}">
+            <StackPanel>
+                <TextBlock Text="SEU FONE" Style="{StaticResource Overline}"/>
+                <TextBlock x:Name="CalDevice" FontWeight="SemiBold" FontSize="15" Margin="0,6,0,0" TextTrimming="CharacterEllipsis"/>
+                <TextBlock Style="{StaticResource Muted}" TextWrapping="Wrap" Margin="0,4,0,0"
+                           Text="Para transformar o sinal digital em dB no ouvido, o VolumeGuard precisa saber o quão alto o seu fone fica no máximo. Escolha o tipo mais parecido, ou calcule pela ficha técnica para ficar preciso."/>
+                <WrapPanel x:Name="PresetPanel" Margin="0,14,0,0"/>
+
+                <DockPanel Margin="0,8,0,0">
+                    <TextBlock x:Name="CalValue" DockPanel.Dock="Right" Style="{StaticResource Value}" MinWidth="90" TextAlignment="Right"/>
+                    <StackPanel VerticalAlignment="Center">
+                        <TextBlock Text="Volume máximo do fone"/>
+                        <TextBlock Style="{StaticResource Caption}" TextWrapping="Wrap" Text="dB SPL com um tom de 1 kHz no volume máximo (Windows e app em 100%)"/>
+                    </StackPanel>
+                </DockPanel>
+                <Slider x:Name="CalSlider" Minimum="80" Maximum="135" SmallChange="0.5" LargeChange="2" Margin="0,6,0,0"/>
+
+                <CheckBox x:Name="CountExposureCheck" Margin="0,12,0,0" Content="Contar exposição neste dispositivo (desligue para caixas de som)"/>
+
+                <ToggleButton x:Name="CalcToggle" Style="{StaticResource SmallToggle}" HorizontalAlignment="Left" Margin="0,10,0,0" Content="Calcular pela ficha técnica do fone"/>
+                <Border x:Name="CalcPanel" Visibility="Collapsed" Background="{StaticResource PageBrush}" BorderBrush="{StaticResource HairlineBrush}" BorderThickness="1" CornerRadius="10" Padding="14,12" Margin="0,10,0,0">
+                    <StackPanel>
+                        <WrapPanel>
+                            <StackPanel Margin="0,0,18,10">
+                                <TextBlock Style="{StaticResource Caption}" Text="Sensibilidade"/>
+                                <StackPanel Orientation="Horizontal" Margin="0,4,0,0">
+                                    <TextBox x:Name="CalcSens" Width="74" Text="100"/>
+                                    <Border Style="{StaticResource SegmentHost}" Margin="6,0,0,0" VerticalAlignment="Center">
+                                        <StackPanel Orientation="Horizontal">
+                                            <RadioButton x:Name="CalcUnitMw" Style="{StaticResource SegmentSmall}" GroupName="calcUnit" Content="dB/mW" IsChecked="True"/>
+                                            <RadioButton x:Name="CalcUnitV" Style="{StaticResource SegmentSmall}" GroupName="calcUnit" Content="dB/V"/>
+                                        </StackPanel>
+                                    </Border>
+                                </StackPanel>
+                            </StackPanel>
+                            <StackPanel Margin="0,0,18,10">
+                                <TextBlock Style="{StaticResource Caption}" Text="Impedância (Ω)"/>
+                                <TextBox x:Name="CalcImp" Width="74" Text="32" Margin="0,4,0,0"/>
+                            </StackPanel>
+                            <StackPanel Margin="0,0,18,10">
+                                <TextBlock Style="{StaticResource Caption}" Text="Saída do PC (V rms)"/>
+                                <TextBox x:Name="CalcVolt" Width="74" Text="1" Margin="0,4,0,0"/>
+                            </StackPanel>
+                        </WrapPanel>
+                        <TextBlock Style="{StaticResource Caption}" TextWrapping="Wrap"
+                                   Text="Saída típica: placa-mãe ≈ 1 V · notebook ≈ 0,5–1 V · dongle USB-C ≈ 0,5–2 V · amplificador de fone ≥ 2 V."/>
+                        <DockPanel Margin="0,10,0,0">
+                            <Button x:Name="CalcApply" DockPanel.Dock="Right" Style="{StaticResource AccentButton}" Content="Usar este valor"/>
+                            <TextBlock x:Name="CalcResult" VerticalAlignment="Center" FontWeight="SemiBold"/>
+                        </DockPanel>
+                    </StackPanel>
+                </Border>
+                <TextBlock x:Name="MasterModeText" Style="{StaticResource Caption}" TextWrapping="Wrap" Margin="0,12,0,0"/>
+            </StackPanel>
+        </Border>
+
+        <!-- Volume dos apps -->
+        <Border Style="{StaticResource Card}" Margin="0,14,0,0">
+            <StackPanel>
+                <TextBlock Text="VOLUME DOS APPS" Style="{StaticResource Overline}"/>
+                <Border Style="{StaticResource SegmentHost}" HorizontalAlignment="Left" Margin="0,10,0,0">
+                    <StackPanel Orientation="Horizontal">
+                        <RadioButton x:Name="SetModeFixed" Style="{StaticResource Segment}" GroupName="modeSet" Content="Volume fixo"/>
+                        <RadioButton x:Name="SetModeTarget" Style="{StaticResource Segment}" GroupName="modeSet" Content="Nível alvo (auto)"/>
+                    </StackPanel>
+                </Border>
+                <TextBlock x:Name="ModeExplain" Style="{StaticResource Muted}" TextWrapping="Wrap" Margin="0,10,0,0"/>
+
+                <DockPanel Margin="0,16,0,0">
+                    <TextBlock x:Name="InitialValue" DockPanel.Dock="Right" Style="{StaticResource Value}" MinWidth="120" TextAlignment="Right"/>
+                    <StackPanel VerticalAlignment="Center">
+                        <TextBlock Text="Volume com que cada app abre"/>
+                        <TextBlock Style="{StaticResource Caption}" Text="Aplicado no instante em que o app começa a usar o som"/>
+                    </StackPanel>
+                </DockPanel>
+                <Slider x:Name="InitialSlider" Minimum="-60" Maximum="0" SmallChange="0.5" LargeChange="3" Margin="0,6,0,0"/>
+
+                <DockPanel Margin="0,16,0,0">
+                    <TextBlock x:Name="TargetValue" DockPanel.Dock="Right" Style="{StaticResource Value}" MinWidth="120" TextAlignment="Right"/>
+                    <StackPanel VerticalAlignment="Center">
+                        <TextBlock Text="Nível alvo (modo auto)"/>
+                        <TextBlock Style="{StaticResource Caption}" Text="Cada app é ajustado para soar perto deste nível no seu ouvido"/>
+                    </StackPanel>
+                </DockPanel>
+                <Slider x:Name="TargetSlider" Minimum="40" Maximum="85" SmallChange="0.5" LargeChange="2" Margin="0,6,0,0"/>
+
+                <CheckBox x:Name="RememberCheck" Margin="0,16,0,0" Content="Lembrar o volume que eu ajustar em cada app (inclusive pelo mixer do Windows)"/>
+                <CheckBox x:Name="ExistingCheck" Content="Ao iniciar, aplicar também nos apps já abertos que estiverem em 100%"/>
+                <CheckBox x:Name="PercentCheck" Content="Mostrar o volume em % em vez de dB"/>
+            </StackPanel>
+        </Border>
+
+        <!-- Proteção -->
+        <Border Style="{StaticResource Card}" Margin="0,14,0,0">
+            <StackPanel>
+                <TextBlock Text="PROTEÇÃO DA AUDIÇÃO" Style="{StaticResource Overline}"/>
+
+                <CheckBox x:Name="LimiterCheck" Margin="0,10,0,0" Content="Limitador: se o som passar do limite, baixar o app responsável na hora (propaganda, vídeo estourado…)"/>
+                <DockPanel Margin="46,4,0,0">
+                    <TextBlock x:Name="LimiterValue" DockPanel.Dock="Right" Style="{StaticResource Value}" MinWidth="80" TextAlignment="Right"/>
+                    <TextBlock DockPanel.Dock="Left" Text="Limite" Style="{StaticResource Muted}" Width="130" VerticalAlignment="Center"/>
+                    <Slider x:Name="LimiterSlider" Minimum="60" Maximum="100" SmallChange="0.5" LargeChange="2" VerticalAlignment="Center"/>
+                </DockPanel>
+
+                <CheckBox x:Name="AlertCheck" Margin="0,14,0,0" Content="Avisar na tela quando o som ficar num nível alarmante"/>
+                <DockPanel Margin="46,4,0,0">
+                    <TextBlock x:Name="AlertValue" DockPanel.Dock="Right" Style="{StaticResource Value}" MinWidth="80" TextAlignment="Right"/>
+                    <TextBlock DockPanel.Dock="Left" Text="Nível" Style="{StaticResource Muted}" Width="130" VerticalAlignment="Center"/>
+                    <Slider x:Name="AlertSlider" Minimum="70" Maximum="105" SmallChange="0.5" LargeChange="2" VerticalAlignment="Center"/>
+                </DockPanel>
+                <DockPanel Margin="46,4,0,0">
+                    <TextBlock x:Name="AlertSecondsValue" DockPanel.Dock="Right" Style="{StaticResource Value}" MinWidth="80" TextAlignment="Right"/>
+                    <TextBlock DockPanel.Dock="Left" Text="Por pelo menos" Style="{StaticResource Muted}" Width="130" VerticalAlignment="Center"/>
+                    <Slider x:Name="AlertSecondsSlider" Minimum="1" Maximum="30" SmallChange="1" LargeChange="5" IsSnapToTickEnabled="True" TickFrequency="1" VerticalAlignment="Center"/>
+                </DockPanel>
+
+                <CheckBox x:Name="DoseCheck" Margin="0,14,0,0" Content="Avisar quando a dose diária chegar a 50%, 80% e 100%"/>
+                <TextBlock Style="{StaticResource Caption}" TextWrapping="Wrap" Margin="0,10,0,0"
+                           Text="Referência (NIOSH): 85 dB → 8 h por dia · 88 dB → 4 h · 91 dB → 2 h · 94 dB → 1 h · 97 dB → 30 min · 100 dB → 15 min."/>
+            </StackPanel>
+        </Border>
+
+        <!-- Sistema -->
+        <Border Style="{StaticResource Card}" Margin="0,14,0,0">
+            <StackPanel>
+                <TextBlock Text="SISTEMA" Style="{StaticResource Overline}"/>
+                <CheckBox x:Name="StartupCheck" Margin="0,10,0,0" Content="Iniciar junto com o Windows (fica na bandeja, perto do relógio)"/>
+                <CheckBox x:Name="MinimizedCheck" Content="Abrir minimizado na bandeja"/>
+                <StackPanel Orientation="Horizontal" Margin="0,10,0,0">
+                    <Button x:Name="OpenDataButton" Style="{StaticResource SmallButton}" Content="Abrir pasta de dados"/>
+                    <Button x:Name="OpenMixerButton" Style="{StaticResource SmallButton}" Content="Abrir mixer do Windows" Margin="8,0,0,0"/>
+                </StackPanel>
+                <TextBlock Style="{StaticResource Caption}" TextWrapping="Wrap" Margin="0,12,0,0"
+                           Text="Os dB são uma estimativa calculada a partir do sinal digital (ponderação A) e das características do fone. Servem para acompanhar sua exposição, mas não substituem um medidor calibrado nem orientação médica."/>
+                <TextBlock x:Name="VersionText" Style="{StaticResource Caption}" TextWrapping="Wrap" Margin="0,8,0,0"/>
+            </StackPanel>
+        </Border>
+    </StackPanel>
+</ScrollViewer>

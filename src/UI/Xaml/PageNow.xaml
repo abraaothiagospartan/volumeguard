@@ -1,0 +1,133 @@
+<ScrollViewer xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+              xmlns:vg="clr-namespace:VolumeGuard.UI;assembly=VolumeGuard"
+              VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
+    <StackPanel Margin="24,6,24,24">
+
+        <Border x:Name="Banner" Style="{StaticResource Banner}" Visibility="Collapsed" Margin="0,0,0,14">
+            <DockPanel>
+                <Button x:Name="BannerButton" DockPanel.Dock="Right" Style="{StaticResource AccentButton}" Content="Configurar fone" VerticalAlignment="Center" Margin="14,0,0,0"/>
+                <StackPanel VerticalAlignment="Center">
+                    <TextBlock x:Name="BannerTitle" FontWeight="SemiBold" Text="Diga qual fone você usa"/>
+                    <TextBlock x:Name="BannerText" Style="{StaticResource Muted}" TextWrapping="Wrap" Margin="0,2,0,0"/>
+                </StackPanel>
+            </DockPanel>
+        </Border>
+
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="3*"/>
+                <ColumnDefinition Width="14"/>
+                <ColumnDefinition Width="2*"/>
+            </Grid.ColumnDefinitions>
+
+            <Border Style="{StaticResource Card}">
+                <StackPanel>
+                    <DockPanel>
+                        <Border x:Name="ZoneChip" DockPanel.Dock="Right" CornerRadius="11" Padding="9,3,11,3" VerticalAlignment="Top" Background="{StaticResource RaisedBrush}">
+                            <StackPanel Orientation="Horizontal">
+                                <Ellipse x:Name="ZoneDot" Width="8" Height="8" VerticalAlignment="Center" Fill="{StaticResource GoodBrush}"/>
+                                <TextBlock x:Name="ZoneText" Margin="7,0,0,0" FontWeight="SemiBold" FontSize="12" Text="Seguro"/>
+                            </StackPanel>
+                        </Border>
+                        <TextBlock Text="NÍVEL ESTIMADO NO SEU OUVIDO" Style="{StaticResource Overline}" VerticalAlignment="Center"/>
+                    </DockPanel>
+                    <StackPanel Orientation="Horizontal" Margin="0,2,0,0">
+                        <TextBlock x:Name="HeroValue" Text="—" FontSize="60" FontWeight="SemiBold"/>
+                        <TextBlock Text="dB" FontSize="20" Foreground="{StaticResource InkSecondaryBrush}" VerticalAlignment="Bottom" Margin="6,0,0,14"/>
+                    </StackPanel>
+                    <TextBlock x:Name="HeroSub" Style="{StaticResource Muted}" TextWrapping="Wrap" Text=" "/>
+                    <vg:LiveChart x:Name="Live" Height="150" Margin="0,14,0,0"/>
+                </StackPanel>
+            </Border>
+
+            <Border Grid.Column="2" Style="{StaticResource Card}">
+                <StackPanel>
+                    <TextBlock Text="EXPOSIÇÃO HOJE" Style="{StaticResource Overline}"/>
+                    <DockPanel Margin="0,12,0,0">
+                        <TextBlock x:Name="DailyDoseValue" DockPanel.Dock="Right" Style="{StaticResource Value}" Text="0%"/>
+                        <TextBlock Text="Dose diária" VerticalAlignment="Bottom"/>
+                    </DockPanel>
+                    <vg:MeterBar x:Name="DailyDoseBar" Height="8" Margin="0,7,0,0"/>
+                    <TextBlock Style="{StaticResource Caption}" TextWrapping="Wrap" Margin="0,6,0,0"
+                               Text="100% = 85 dB por 8 h (NIOSH). A cada +3 dB, o tempo cai pela metade."/>
+
+                    <DockPanel Margin="0,16,0,0">
+                        <TextBlock x:Name="WeeklyDoseValue" DockPanel.Dock="Right" Style="{StaticResource Value}" Text="0%"/>
+                        <TextBlock Text="Dose da semana" VerticalAlignment="Bottom"/>
+                    </DockPanel>
+                    <vg:MeterBar x:Name="WeeklyDoseBar" Height="8" Margin="0,7,0,0"/>
+                    <TextBlock Style="{StaticResource Caption}" TextWrapping="Wrap" Margin="0,6,0,0"
+                               Text="100% = 80 dB por 40 h em 7 dias (OMS, escuta segura)."/>
+
+                    <Border Height="1" Background="{StaticResource HairlineBrush}" Margin="0,16"/>
+                    <UniformGrid Columns="3">
+                        <StackPanel>
+                            <TextBlock Style="{StaticResource Caption}" Text="Ouvindo"/>
+                            <TextBlock x:Name="ListenValue" Style="{StaticResource Value}" Text="0 min"/>
+                        </StackPanel>
+                        <StackPanel>
+                            <TextBlock Style="{StaticResource Caption}" Text="Média do dia"/>
+                            <TextBlock x:Name="LeqValue" Style="{StaticResource Value}" Text="—"/>
+                        </StackPanel>
+                        <StackPanel>
+                            <TextBlock Style="{StaticResource Caption}" Text="Pico (1 s)"/>
+                            <TextBlock x:Name="MaxValue" Style="{StaticResource Value}" Text="—"/>
+                        </StackPanel>
+                    </UniformGrid>
+                </StackPanel>
+            </Border>
+        </Grid>
+
+        <Grid Margin="0,14,0,0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="14"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+
+            <Border Style="{StaticResource Card}">
+                <StackPanel>
+                    <TextBlock Text="VOLUME DOS APPS" Style="{StaticResource Overline}"/>
+                    <Border Style="{StaticResource SegmentHost}" HorizontalAlignment="Left" Margin="0,10,0,0">
+                        <StackPanel Orientation="Horizontal">
+                            <RadioButton x:Name="ModeFixed" Style="{StaticResource Segment}" GroupName="modeNow" Content="Volume fixo"/>
+                            <RadioButton x:Name="ModeTarget" Style="{StaticResource Segment}" GroupName="modeNow" Content="Nível alvo (auto)"/>
+                        </StackPanel>
+                    </Border>
+                    <DockPanel Margin="0,14,0,0">
+                        <TextBlock x:Name="QuickValue" DockPanel.Dock="Right" Style="{StaticResource Value}" MinWidth="110" TextAlignment="Right"/>
+                        <TextBlock x:Name="QuickLabel" VerticalAlignment="Center"/>
+                    </DockPanel>
+                    <Slider x:Name="QuickSlider" Margin="0,6,0,0"/>
+                    <TextBlock x:Name="QuickCaption" Style="{StaticResource Caption}" TextWrapping="Wrap" Margin="0,6,0,0"/>
+                    <Border Height="1" Background="{StaticResource HairlineBrush}" Margin="0,14"/>
+                    <DockPanel>
+                        <Ellipse x:Name="LimiterDot" Width="8" Height="8" DockPanel.Dock="Left" Margin="0,5,9,0" VerticalAlignment="Top" Fill="{StaticResource GoodBrush}"/>
+                        <TextBlock x:Name="LimiterText" TextWrapping="Wrap" Style="{StaticResource Muted}"/>
+                    </DockPanel>
+                </StackPanel>
+            </Border>
+
+            <Border Grid.Column="2" Style="{StaticResource Card}">
+                <StackPanel>
+                    <DockPanel>
+                        <ToggleButton x:Name="MuteButton" DockPanel.Dock="Right" Style="{StaticResource SmallToggle}" Content="Mudo"/>
+                        <TextBlock Text="VOLUME DO WINDOWS" Style="{StaticResource Overline}" VerticalAlignment="Center"/>
+                    </DockPanel>
+                    <TextBlock x:Name="DeviceText" Style="{StaticResource Muted}" Margin="0,4,0,0" TextTrimming="CharacterEllipsis"/>
+                    <DockPanel Margin="0,12,0,0">
+                        <TextBlock x:Name="MasterValue" DockPanel.Dock="Right" Style="{StaticResource Value}" MinWidth="110" TextAlignment="Right"/>
+                        <TextBlock Text="Volume geral" VerticalAlignment="Center"/>
+                    </DockPanel>
+                    <Slider x:Name="MasterSlider" Margin="0,6,0,0"/>
+                    <StackPanel Orientation="Horizontal" Margin="0,10,0,0">
+                        <Button x:Name="MasterDown" Style="{StaticResource SmallButton}" Content="−1 dB"/>
+                        <Button x:Name="MasterUp" Style="{StaticResource SmallButton}" Content="+1 dB" Margin="6,0,0,0"/>
+                    </StackPanel>
+                    <TextBlock x:Name="MasterCaption" Style="{StaticResource Caption}" TextWrapping="Wrap" Margin="0,8,0,0"/>
+                </StackPanel>
+            </Border>
+        </Grid>
+    </StackPanel>
+</ScrollViewer>
