@@ -12,7 +12,7 @@ Para quem usa fone e se incomoda com app e site abrindo com o volume "no talo". 
 
 ## Instalar
 
-1. Baixe o `VolumeGuard-Setup-1.0.0.exe` na página de *Releases*.
+1. Baixe o `VolumeGuard-Setup-1.0.0.exe` em **[Releases](https://github.com/abraaothiagospartan/volumeguard/releases/latest)**.
 2. Abra o arquivo. A instalação é só para o seu usuário e **não pede administrador**.
 3. Na primeira vez, vá em **Ajustes → Seu fone** e escolha o tipo do seu fone (ou use a calculadora com a ficha técnica). É isso que faz os dB ficarem certos.
 
