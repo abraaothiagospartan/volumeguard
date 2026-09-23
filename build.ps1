@@ -48,7 +48,7 @@ if ($LASTEXITCODE -ne 0) { throw 'Falha ao compilar o instalador' }
 $zip = Join-Path $rel "VolumeGuard-$version-portatil.zip"
 if (Test-Path $zip) { Remove-Item $zip }
 Compress-Archive -Path $app, (Join-Path $root 'LICENSE') -DestinationPath $zip
-$sums = Get-ChildItem $rel -File | Where-Object { $_.Name -ne 'SHA256SUMS.txt' } | ForEach-Object {
+$sums = Get-ChildItem $rel -File | Where-Object { $_.Extension -in '.exe', '.zip' } | ForEach-Object {
     "{0}  {1}" -f (Get-FileHash $_.FullName -Algorithm SHA256).Hash.ToLower(), $_.Name
 }
 Set-Content -Path (Join-Path $rel 'SHA256SUMS.txt') -Value $sums -Encoding ASCII
