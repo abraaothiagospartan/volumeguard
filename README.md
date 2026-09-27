@@ -12,16 +12,16 @@ Para quem usa fone e se incomoda com app e site abrindo com o volume "no talo". 
 
 ## Instalar
 
-1. Baixe o `VolumeGuard-Setup-1.0.0.exe` em **[Releases](https://github.com/abraaothiagospartan/volumeguard/releases/latest)**.
+1. Baixe o `VolumeGuard-Setup-<versão>.exe` em **[Releases](https://github.com/abraaothiagospartan/volumeguard/releases/latest)**.
 2. Abra o arquivo. A instalação é só para o seu usuário e **não pede administrador**.
 3. Na primeira vez, vá em **Ajustes → Seu fone** e escolha o tipo do seu fone (ou use a calculadora com a ficha técnica). É isso que faz os dB ficarem certos.
 
 > **Aviso "O Windows protegeu o computador":** o instalador ainda não tem assinatura digital (um certificado pago). Por isso o SmartScreen pode avisar em apps novos. Clique em **Mais informações → Executar assim mesmo**. Se quiser conferir que o arquivo é o original, compare o SHA-256 com o do `SHA256SUMS.txt` da release:
 > ```bash
-> certutil -hashfile VolumeGuard-Setup-1.0.0.exe SHA256
+> certutil -hashfile VolumeGuard-Setup-<versão>.exe SHA256
 > ```
 
-Prefere não instalar? Use o `VolumeGuard-1.0.0-portatil.zip`: extraia e rode o `VolumeGuard.exe`.
+Prefere não instalar? Use o `VolumeGuard-<versão>-portatil.zip`: extraia e rode o `VolumeGuard.exe`.
 
 **Requisitos:** Windows 10 ou 11 (64 bits). Usa o .NET Framework 4.8, que já vem no Windows.
 

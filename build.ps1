@@ -36,7 +36,9 @@ $xaml = Get-ChildItem "$root\src\UI\Xaml\*.xaml" | ForEach-Object { "/resource:$
     "/resource:$ico,VolumeGuard.app.ico" @xaml @refs /recurse:"$root\src\*.cs"
 if ($LASTEXITCODE -ne 0) { throw 'Falha ao compilar o VolumeGuard' }
 
-# 3) Instalador (leva o app dentro)
+# 3) Instalador (leva o app dentro) — antes, tira da release os arquivos de versões anteriores
+Get-ChildItem $rel -File | Where-Object { $_.Extension -in '.exe', '.zip' } | Remove-Item
+
 $setup = Join-Path $rel "VolumeGuard-Setup-$version.exe"
 & $csc @common /target:winexe /warn:4 /out:"$setup" /win32icon:"$ico" /win32manifest:"$root\installer\setup.manifest" `
     "/resource:$app,Setup.payload.exe" "/resource:$ico,Setup.app.ico" `

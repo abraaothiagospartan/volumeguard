@@ -56,10 +56,14 @@ namespace VolumeGuard.Core
         [DataMember] public int AlertSeconds;
         [DataMember] public bool DoseAlerts;
         [DataMember] public bool StartMinimized;
+        /// <summary>Tela mostrada ao abrir a janela: now, apps, history ou settings.</summary>
+        [DataMember] public string StartPage;
         [DataMember] public bool FirstRunDone;
         [DataMember] public int SettingsVersion;
         [DataMember] public List<DeviceProfile> Devices;
         [DataMember] public List<AppRule> Apps;
+
+        public static readonly string[] Pages = { "now", "apps", "history", "settings" };
 
         public AppSettings() { SetDefaults(); }
 
@@ -82,6 +86,7 @@ namespace VolumeGuard.Core
             LimiterMaxSpl = Clamp(LimiterMaxSpl, 60, 100, 85);
             AlertSpl = Clamp(AlertSpl, 70, 105, 85);
             AlertSeconds = Math.Max(1, Math.Min(30, AlertSeconds));
+            if (Array.IndexOf(Pages, StartPage) < 0) StartPage = "now";
             Devices.RemoveAll(d => d == null || string.IsNullOrEmpty(d.Id));
             if (Devices.Count > 50) Devices.RemoveRange(0, Devices.Count - 50);
             foreach (var d in Devices)
@@ -121,6 +126,7 @@ namespace VolumeGuard.Core
             AlertSeconds = 5;
             DoseAlerts = true;
             StartMinimized = false;
+            StartPage = "now";
             SettingsVersion = 1;
             Devices = new List<DeviceProfile>();
             Apps = new List<AppRule>();

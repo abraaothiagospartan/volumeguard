@@ -23,6 +23,7 @@ namespace VolumeGuard.UI
         TextBox calcSens, calcImp, calcVolt;
         RadioButton calcUnitMw, setModeFixed, setModeTarget;
         readonly Dictionary<string, RadioButton> presetButtons = new Dictionary<string, RadioButton>();
+        readonly Dictionary<string, RadioButton> startPageButtons = new Dictionary<string, RadioButton>();
         double calcValue = double.NaN;
         string shownDeviceId;
 
@@ -64,6 +65,20 @@ namespace VolumeGuard.UI
             doseCheck = Xaml.Find<CheckBox>(p, "DoseCheck");
             startupCheck = Xaml.Find<CheckBox>(p, "StartupCheck");
             minimizedCheck = Xaml.Find<CheckBox>(p, "MinimizedCheck");
+            startPageButtons["now"] = Xaml.Find<RadioButton>(p, "StartPageNow");
+            startPageButtons["apps"] = Xaml.Find<RadioButton>(p, "StartPageApps");
+            startPageButtons["history"] = Xaml.Find<RadioButton>(p, "StartPageHistory");
+            startPageButtons["settings"] = Xaml.Find<RadioButton>(p, "StartPageSettings");
+            foreach (var kv in startPageButtons)
+            {
+                string page = kv.Key;
+                kv.Value.Checked += (s, a) =>
+                {
+                    if (setUpdating) return;
+                    SettingsStore.Current.StartPage = page;
+                    SettingsStore.MarkDirty();
+                };
+            }
 
             foreach (var preset in HeadphonePresets.All)
             {
@@ -252,6 +267,7 @@ namespace VolumeGuard.UI
                 doseCheck.IsChecked = s.DoseAlerts;
                 startupCheck.IsChecked = StartupManager.IsEnabled;
                 minimizedCheck.IsChecked = s.StartMinimized;
+                foreach (var kv in startPageButtons) kv.Value.IsChecked = kv.Key == (s.StartPage ?? "now");
             }
             finally { setUpdating = false; }
         }

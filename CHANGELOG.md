@@ -1,5 +1,11 @@
 # Histórico de versões
 
+## 1.1.0
+
+- Nova opção em **Ajustes → Sistema → Tela inicial**: escolha qual tela aparece ao abrir o VolumeGuard (Agora, Apps, Histórico ou Ajustes).
+- Instalador mais robusto: o registro em "Aplicativos instalados" é feito logo depois de copiar os arquivos, e uma falha ao criar atalho não interrompe mais a instalação.
+- A janela do instalador mostra "Atualizar" quando o app já está instalado.
+
 ## 1.0.0
 
 Primeira versão pública.

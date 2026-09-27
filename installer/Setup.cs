@@ -140,17 +140,8 @@ namespace VolumeGuardSetup
                 ReplaceFile(uninstaller + ".novo", uninstaller);
             }
 
-            Report(progress, "Criando atalhos…");
-            CreateShortcut(StartMenuLink, ExePath, "Volume de cada app, limitador e histórico de dB");
-            if (desktop) CreateShortcut(DesktopLink, ExePath, "VolumeGuard");
-            else if (File.Exists(DesktopLink)) File.Delete(DesktopLink);
-
-            using (var run = Registry.CurrentUser.CreateSubKey(RunKey))
-            {
-                if (autostart) run.SetValue("VolumeGuard", "\"" + ExePath + "\" --minimized");
-                else if (run.GetValue("VolumeGuard") != null) run.DeleteValue("VolumeGuard");
-            }
-
+            // registra logo depois dos arquivos: se algo interromper a instalação daqui pra frente,
+            // o app já aparece em "Aplicativos instalados" e dá para desinstalar normalmente
             Report(progress, "Registrando no Windows…");
             long sizeKb = (new FileInfo(ExePath).Length + new FileInfo(uninstaller).Length) / 1024;
             using (var k = Registry.CurrentUser.CreateSubKey(UninstallKey))
@@ -167,7 +158,27 @@ namespace VolumeGuardSetup
                 k.SetValue("NoModify", 1, RegistryValueKind.DWord);
                 k.SetValue("NoRepair", 1, RegistryValueKind.DWord);
             }
+
+            using (var run = Registry.CurrentUser.CreateSubKey(RunKey))
+            {
+                if (autostart) run.SetValue("VolumeGuard", "\"" + ExePath + "\" --minimized");
+                else if (run.GetValue("VolumeGuard") != null) run.DeleteValue("VolumeGuard");
+            }
+
+            // atalho que falha não derruba a instalação (o app continua no Menu Iniciar ou na pasta)
+            Report(progress, "Criando atalhos…");
+            TryStep(() => CreateShortcut(StartMenuLink, ExePath, "Volume de cada app, limitador e histórico de dB"));
+            TryStep(() =>
+            {
+                if (desktop) CreateShortcut(DesktopLink, ExePath, "VolumeGuard");
+                else if (File.Exists(DesktopLink)) File.Delete(DesktopLink);
+            });
             Report(progress, "Pronto!");
+        }
+
+        static void TryStep(Action step)
+        {
+            try { step(); } catch (Exception ex) { LogError(ex); }
         }
 
         public static void Launch()
@@ -411,6 +422,7 @@ namespace VolumeGuardSetup
             else if (Installer.IsInstalled)
             {
                 titleText.Text = "Atualizar o VolumeGuard";
+                Title = "Atualizar o VolumeGuard";
                 primary.Content = "Atualizar";
                 autostartCheck.IsChecked = Installer.AutostartEnabled;
                 desktopCheck.IsChecked = Installer.HasDesktopLink;

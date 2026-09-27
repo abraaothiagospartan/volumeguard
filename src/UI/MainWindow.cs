@@ -59,7 +59,7 @@ namespace VolumeGuard.UI
             navApps.Checked += (s, a) => ShowPage("apps");
             navHistory.Checked += (s, a) => ShowPage("history");
             navSettings.Checked += (s, a) => ShowPage("settings");
-            ShowPage("now");
+            ShowPage(SettingsStore.Current.StartPage ?? "now");
 
             SourceInitialized += (s, a) => Native.DarkTitleBar(this);
         }
